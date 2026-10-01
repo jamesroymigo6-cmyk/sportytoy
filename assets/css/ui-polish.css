@@ -1,0 +1,265 @@
+/* =====================================================================
+   SportSync UI polish — layered on top of app.css (keep after it loads)
+   Modern surfaces, softer shadows, cohesive purple accent, better focus
+   states, refined tables/forms/modals. Dark-theme aware via CSS vars.
+   ===================================================================== */
+
+/* ---------- Design tokens ---------- */
+:root{
+  --ui-accent:#8b5cf6;
+  --ui-accent-2:#6d4dd6;
+  --ui-ring:rgba(139,92,246,.28);
+  --ui-shadow-sm:0 1px 2px rgba(32,24,64,.05),0 2px 8px rgba(32,24,64,.05);
+  --ui-shadow-md:0 6px 18px rgba(32,24,64,.08);
+  --ui-shadow-lg:0 18px 44px rgba(32,24,64,.14);
+  --ui-radius:16px;
+}
+body.theme-dark{
+  --ui-ring:rgba(139,92,246,.4);
+  --ui-shadow-sm:0 1px 2px rgba(0,0,0,.3),0 2px 10px rgba(0,0,0,.25);
+  --ui-shadow-md:0 8px 22px rgba(0,0,0,.35);
+  --ui-shadow-lg:0 20px 48px rgba(0,0,0,.45);
+}
+
+/* ---------- Global focus visibility ---------- */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:2px solid var(--ui-accent);
+  outline-offset:2px;
+  border-radius:8px;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar{border-right:1px solid rgba(255,255,255,.04)}
+.sidebar .brand-logo{border-radius:14px;box-shadow:0 12px 26px rgba(139,92,246,.4)}
+.sidebar .nav-link{
+  border-radius:12px;
+  transition:background .16s ease,color .16s ease,transform .16s ease;
+}
+.sidebar .nav-link:hover{transform:translateX(2px)}
+.sidebar .nav-link.active{
+  background:linear-gradient(135deg,var(--ui-accent),var(--ui-accent-2));
+  box-shadow:0 10px 22px rgba(109,77,214,.35);
+}
+.sidebar .nav-link i{transition:color .16s ease}
+.sidebar .nav-section{letter-spacing:.14em;padding-left:12px}
+
+/* ---------- Topbar ---------- */
+.topbar{
+  backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid var(--line);
+}
+.topbar h1{letter-spacing:-.03em}
+.icon-btn{
+  border-radius:12px;
+  transition:border-color .15s ease,color .15s ease,background .15s ease,box-shadow .15s ease,transform .12s ease;
+}
+.icon-btn:hover{box-shadow:var(--ui-shadow-sm);transform:translateY(-1px)}
+.icon-btn:active{transform:translateY(0)}
+.user-chip{border-radius:12px;padding:4px 8px 4px 4px;transition:background .15s ease}
+.user-chip:hover{background:var(--surface-2)}
+
+/* ---------- Buttons ---------- */
+.btn{
+  border-radius:12px;
+  font-size:12.5px;
+  transition:transform .12s ease,box-shadow .18s ease,background .15s ease,border-color .15s ease,color .15s ease,filter .15s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--ui-accent),var(--ui-accent-2));
+  box-shadow:0 8px 20px rgba(139,92,246,.28);
+}
+.btn-primary:hover{filter:brightness(1.06);box-shadow:0 10px 26px rgba(139,92,246,.36)}
+.btn-soft{background:var(--surface-2);border:1px solid var(--line);color:#453e60}
+.btn-soft:hover{border-color:#cfc5e6;color:var(--ui-accent-2)}
+body.theme-dark .btn-soft{background:rgba(255,255,255,.06);color:#cfc8e6}
+.btn-sm{border-radius:10px}
+.btn-lg{border-radius:14px}
+
+/* ---------- Panels & cards ---------- */
+.panel{
+  border-radius:var(--ui-radius);
+  box-shadow:var(--ui-shadow-sm);
+  transition:box-shadow .2s ease,border-color .2s ease,transform .2s ease;
+}
+.panel:hover{box-shadow:var(--ui-shadow-md)}
+.panel-head h3{letter-spacing:-.02em}
+.stat-card,.product-card,.venue-card,.resource-card,.inventory-card,.discover-card,.notice-card{
+  border-radius:var(--ui-radius);
+  box-shadow:var(--ui-shadow-sm);
+  transition:transform .18s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.stat-card:hover,.product-card:hover,.venue-card:hover,.resource-card:hover,.inventory-card:hover,.discover-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--ui-shadow-md);
+  border-color:#d9cff2;
+}
+body.theme-dark .stat-card:hover,body.theme-dark .product-card:hover,body.theme-dark .discover-card:hover{
+  border-color:#4a3d78;
+}
+
+/* ---------- Tables ---------- */
+.modern-table thead th{
+  letter-spacing:.1em;
+  border-bottom:1px solid var(--line);
+}
+.modern-table tbody tr{transition:background .14s ease}
+.modern-table tbody tr:hover{background:rgba(139,92,246,.045)}
+body.theme-dark .modern-table tbody tr:hover{background:rgba(139,92,246,.09)}
+.modern-table td{border-color:transparent;box-shadow:inset 0 -1px 0 var(--line)}
+
+/* ---------- Forms ---------- */
+.form-control,.form-select{
+  border-radius:12px;
+  border-color:var(--line);
+  transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.form-control:focus,.form-select:focus{
+  border-color:var(--ui-accent);
+  box-shadow:0 0 0 4px var(--ui-ring);
+}
+.form-label{font-weight:600;letter-spacing:.01em}
+.form-text{color:var(--muted)}
+textarea.form-control{border-radius:13px}
+
+/* ---------- Modals & offcanvas ---------- */
+.modal-content{
+  border-radius:18px;
+  border:1px solid var(--line);
+  box-shadow:var(--ui-shadow-lg);
+  overflow:hidden;
+}
+.modal-header{border-bottom:1px solid var(--line);padding:16px 20px}
+.modal-header .modal-title{font-weight:800;letter-spacing:-.02em;font-size:15px}
+.modal-footer{border-top:1px solid var(--line);padding:13px 20px}
+.modal-backdrop.show{opacity:.55;backdrop-filter:blur(2px)}
+.cart-canvas{box-shadow:var(--ui-shadow-lg)}
+
+/* ---------- Status pills ---------- */
+.status-pill{font-size:9px;letter-spacing:.04em;padding:5px 10px;border-radius:999px}
+
+/* ---------- Alerts ---------- */
+.app-alert{border-radius:14px;box-shadow:var(--ui-shadow-sm)}
+
+/* ---------- Nav pills (feed tabs, view switch) ---------- */
+.feed-tabs a,.view-switch button{transition:background .15s ease,color .15s ease,box-shadow .15s ease}
+.feed-tabs a.active,.view-switch button.active{box-shadow:0 6px 14px rgba(139,92,246,.25)}
+
+/* ---------- Scrollbars ---------- */
+.sidebar-nav::-webkit-scrollbar,.main-content::-webkit-scrollbar{width:9px}
+.sidebar-nav::-webkit-scrollbar-thumb,.main-content::-webkit-scrollbar-thumb{
+  background:rgba(139,92,246,.25);border-radius:999px;border:2px solid transparent;background-clip:content-box;
+}
+.sidebar-nav::-webkit-scrollbar-thumb:hover,.main-content::-webkit-scrollbar-thumb:hover{background:rgba(139,92,246,.45);background-clip:content-box}
+
+/* ---------- Page headers ---------- */
+.page-intro h2{letter-spacing:-.045em}
+.page-intro .btn{box-shadow:var(--ui-shadow-sm)}
+
+/* ---------- Auth + landing reuse ---------- */
+.auth-card{box-shadow:var(--ui-shadow-lg)}
+.app-footer{color:var(--muted)}
+
+/* ---------- Mobile bottom nav ---------- */
+.mobile-bottom-nav a{transition:color .15s ease,transform .15s ease}
+.mobile-bottom-nav a.active{color:var(--ui-accent)}
+.mobile-bottom-nav a:active{transform:scale(.94)}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+/* =====================================================================
+   Layout hardening: SMS single container + deeper responsiveness
+   ===================================================================== */
+
+/* SMS console: one centered column, comfortable reading width */
+.sms-admin-single{display:flex;flex-direction:column;gap:14px;max-width:1080px;margin:0 auto;width:100%}
+.sms-admin-single .sms-recipients-panel{max-height:420px;overflow:auto}
+.sms-test-row{align-items:end}
+
+/* Responsive helpers for dense rows */
+.table-responsive{max-width:100%}
+.modern-table{min-width:0}
+.page-intro{flex-wrap:wrap}
+.page-intro .btn{margin-top:6px}
+
+/* --- Large tablets / small laptops --- */
+@media (max-width:1199.98px){
+  .sms-admin-single{max-width:860px}
+}
+
+/* --- Tablets --- */
+@media (max-width:991.98px){
+  .main-content{padding:18px 16px 90px}
+  .profile-layout{grid-template-columns:1fr}
+  .messenger-shell{height:calc(100vh - 150px);min-height:480px}
+}
+
+/* --- Large phones / small tablets --- */
+@media (max-width:767.98px){
+  .topbar{padding:0 12px;height:66px}
+  .topbar-left h1{font-size:15px}
+  .page-intro h2{font-size:21px}
+  .main-content{padding:14px 12px 96px}
+  .panel{padding:14px;border-radius:15px}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .dashboard-grid,.product-grid,.resource-grid,.notice-grid{grid-template-columns:1fr}
+  .product-grid.large{grid-template-columns:1fr}
+  .review-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .travel-inline{flex-direction:column;align-items:flex-start}
+  .travel-inline label{width:100%}
+  .travel-inline input{width:80px}
+  .modal-dialog{margin:8px}
+  .modal-content{max-height:92vh;overflow:auto}
+  /* Data tables: collapse to readable stacked cards instead of horizontal scroll */
+  .modern-table thead{display:none}
+  .modern-table tbody tr{display:block;border:1px solid var(--line);border-radius:13px;padding:10px 12px;margin-bottom:9px;background:var(--surface);box-shadow:var(--ui-shadow-sm)}
+  .modern-table tbody td{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border:0;box-shadow:none;padding:4px 0}
+  .modern-table tbody td::before{content:attr(data-label);font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:2px;flex:none}
+  .modern-table tbody td:empty{display:none}
+  .table-toolbar{flex-wrap:wrap}
+  .search-input{max-width:100%;width:100%}
+  .order-row{flex-direction:column;align-items:flex-start}
+  .order-row>div:last-child{text-align:left;margin-top:8px}
+  .sms-recipients-panel{max-height:340px}
+  .sms-history-item{flex-wrap:wrap}
+  .sms-history-item time{margin-left:33px}
+}
+
+/* --- Phones --- */
+@media (max-width:575.98px){
+  .stats-grid,.review-grid,.announcement-summary{grid-template-columns:1fr 1fr}
+  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .dashboard-welcome,.weather-hero{padding:16px;border-radius:18px}
+  .dashboard-welcome h2{font-size:20px}
+  .auth-card{width:100%!important;max-width:440px}
+  .payment-methods{gap:8px}
+  .payment-option{flex:1 1 46%}
+  .payment-option span{font-size:11px;padding:9px 10px}
+  .btn{min-height:44px}
+  .btn-sm{min-height:36px}
+  .action-row{flex-wrap:wrap}
+  .chat-composer textarea{font-size:16px}
+  .form-control,.form-select{font-size:16px}
+  .modern-table tbody td{flex-direction:column;align-items:flex-start;gap:3px}
+  .modern-table tbody td::before{margin-bottom:1px}
+  .modern-table .action-row{flex-direction:row}
+  .sms-admin-single{gap:11px}
+  .page-intro{margin-bottom:12px}
+}
+
+/* --- Small phones --- */
+@media (max-width:400px){
+  .stats-grid{grid-template-columns:1fr}
+  .quick-grid{grid-template-columns:1fr 1fr}
+  .topbar .eyebrow{display:none}
+}
+
+/* Landscape phones: keep the messenger usable */
+@media (max-height:520px) and (orientation:landscape){
+  .messenger-shell{height:auto;min-height:380px}
+  .chat-thread{max-height:46vh}
+}
