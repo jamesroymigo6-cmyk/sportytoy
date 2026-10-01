@@ -24,7 +24,7 @@ $notice = trim($_GET['notice'] ?? '');
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/landing.css?v=20260929b">
+<link rel="icon" type="image/png" href="assets/img/logo-icon.png"><link rel="stylesheet" href="assets/css/landing.css?v=20261002a">
 </head>
 <body class="landing-body">
 
@@ -37,7 +37,7 @@ $notice = trim($_GET['notice'] ?? '');
     <!-- ============ NAV ============ -->
     <header class="landing-nav" id="landingNav">
         <a class="landing-brand" href="landing.php">
-            <span class="landing-brand-mark"><i class="fa-solid fa-trophy"></i></span>
+            <span class="landing-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
             <span class="brand-words"><strong>SportSync</strong><small>sports operations</small></span>
         </a>
         <nav class="landing-links" aria-label="Site sections">
@@ -270,7 +270,7 @@ $notice = trim($_GET['notice'] ?? '');
     <footer class="landing-footer">
         <div class="footer-inner">
             <div class="footer-brand">
-                <span class="landing-brand-mark"><i class="fa-solid fa-trophy"></i></span>
+                <span class="landing-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
                 <div class="brand-words"><strong>SportSync</strong><small>Sports event operations for Tupi, South Cotabato</small></div>
             </div>
             <nav class="footer-links" aria-label="Footer">

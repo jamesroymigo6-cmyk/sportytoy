@@ -148,3 +148,58 @@ function sportsync_validate_schedule(PDO $pdo = null, array $args): array {
 
     return ['ok' => true];
 }
+
+/**
+ * ============================================================================
+ * Automatic venue matching
+ * ============================================================================
+ * Picks the best venue for a proposed schedule so users do not have to guess.
+ * Every candidate must pass the FULL sportsync_validate_schedule() rule set
+ * (availability status, capacity, opening hours, turnaround buffer and the
+ * venue-overlap conflict query), so an auto-matched venue can never collide
+ * with an existing booking.
+ *
+ * Selection strategy: venues are examined smallest-capacity-first and the
+ * first conflict-free venue that fits the group wins — this keeps large
+ * venues free for genuinely large events. Capacity 0 is treated as unlimited.
+ *
+ * The organizer double-booking check is intentionally NOT part of matching:
+ * it is venue-independent and the caller's final validate_schedule() pass
+ * reports it with a precise message.
+ *
+ * $args = ['start','end','people'] plus optional 'ignore_event' (reschedule).
+ * Returns ['ok'=>true,'venue'=>row,'alternatives'=>rows] or ['ok'=>false,'error'=>string].
+ */
+function sportsync_match_venue(?PDO $pdo, array $args): array {
+    $start = (string)($args['start'] ?? '');
+    $end = (string)($args['end'] ?? '');
+    $people = max(1, (int)($args['people'] ?? 1));
+
+    // Fail fast on schedule-integrity rules (duration, hours, advance window)
+    // before scanning venues, so the user gets the precise rule error.
+    $pre = sportsync_validate_schedule(null, ['start' => $start, 'end' => $end]);
+    if (!$pre['ok']) return $pre;
+    if (!$pdo) return ['ok' => false, 'error' => 'Database unavailable for venue matching.'];
+
+    $q = $pdo->query('SELECT id,name,address,latitude,longitude,capacity,facilities,status FROM venues WHERE status="available" ORDER BY CASE WHEN capacity=0 THEN 999999 ELSE capacity END ASC, id ASC');
+    $best = null;
+    $alternatives = [];
+    foreach ($q->fetchAll(PDO::FETCH_ASSOC) as $venue) {
+        if ((int)$venue['capacity'] > 0 && $people > (int)$venue['capacity']) continue;
+        $check = sportsync_validate_schedule($pdo, [
+            'start' => $start,
+            'end' => $end,
+            'venue_id' => (int)$venue['id'],
+            'people' => $people,
+            'ignore_event' => (int)($args['ignore_event'] ?? 0),
+        ]);
+        if (!$check['ok']) continue; // conflict (incl. buffer) or capacity — skip
+        $alternatives[] = $venue;
+        if ($best === null) $best = $venue; // smallest fitting, conflict-free
+    }
+
+    if (!$best) {
+        return ['ok' => false, 'error' => 'No venue is free for that schedule and group size. Adjust the date, time, or participant count and try again.'];
+    }
+    return ['ok' => true, 'venue' => $best, 'alternatives' => $alternatives];
+}

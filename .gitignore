@@ -1,0 +1,15 @@
+# Local environment secrets (database password, API keys)
+.env
+
+# Runtime logs and local caches
+storage/logs/
+storage/cache/
+storage/*.log
+
+# XAMPP / tooling leftovers
+*.ps1
+l.txt
+
+# Editor junk
+.DS_Store
+Thumbs.db

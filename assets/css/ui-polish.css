@@ -31,6 +31,10 @@ body.theme-dark{
 /* ---------- Sidebar ---------- */
 .sidebar{border-right:1px solid rgba(255,255,255,.04)}
 .sidebar .brand-logo{border-radius:14px;box-shadow:0 12px 26px rgba(139,92,246,.4)}
+/* ---------- Planner auto-match ---------- */
+.planner-actions-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.auto-match-status{font-size:12px;font-weight:600;color:var(--success,#1b9c69);display:inline-flex;align-items:center;gap:6px}
+.auto-match-status strong{color:inherit}
 .sidebar .nav-link{
   border-radius:12px;
   transition:background .16s ease,color .16s ease,transform .16s ease;

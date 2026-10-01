@@ -114,6 +114,14 @@ body.landing-body {
     color: #fff;
     font-size: 1.05rem;
     box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
+    overflow: hidden;
+}
+
+.landing-brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .brand-words {

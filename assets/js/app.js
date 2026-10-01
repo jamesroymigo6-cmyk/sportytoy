@@ -25,6 +25,7 @@ $$('form').forEach(form=>form.addEventListener('submit',()=>{const btn=form.quer
 
 // Calendar-based event planner
 const findBtn=$('#findAvailability'), plannerStart=$('#plannerStart'), plannerEnd=$('#plannerEnd'), plannerPeople=$('#plannerPeople'), venueResults=$('#venueResults'), equipmentResults=$('#equipmentResults'), selectedVenue=$('#selectedVenueId'), submitPlan=$('#submitPlan');
+const autoMatchBtn=$('#autoMatchBtn'), autoMatchField=$('#autoMatchField'), autoMatchStatus=$('#autoMatchStatus');
 const plannerDate=$('#plannerDate'), plannerStartTime=$('#plannerStartTime'), plannerEndTime=$('#plannerEndTime');
 let plannerMap,plannerMarker,calendarDate=new Date();
 function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]))}
@@ -70,6 +71,49 @@ async function fillTravelEstimate(venueId){
     src.textContent='≈ '+d.km+' km · '+d.minutes+' min drive from '+(d.origin||'your address')+' to '+d.venue;
   }catch(e){src.textContent='Travel estimate unavailable right now.'}
 }
+// Automatic venue matching: selects the best conflict-free venue for the
+// chosen schedule. The availability API returns venues ordered by capacity
+// (smallest first) after running the full conflict rule set — buffer time,
+// opening hours, capacity and venue overlap — so the first entry is always a
+// safe pick, and large venues stay free for genuinely large events.
+function selectVenueCard(v){
+  const el=$$('.venue-option').find(x=>$('input',x)&&$('input',x).value===String(v.id));
+  if(!el)return;
+  $$('.venue-option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');
+  selectedVenue.value=v.id;$('#summaryVenue').textContent=v.name;submitPlan.disabled=false;
+  fillTravelEstimate(v.id);
+  if(v.latitude&&v.longitude){$('#plannerMap').classList.add('active');if(!plannerMap)plannerMap=L.map('plannerMap').setView([+v.latitude,+v.longitude],15);else plannerMap.setView([+v.latitude,+v.longitude],15);if(!plannerMap._tiles){L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(plannerMap);plannerMap._tiles=true}if(plannerMarker)plannerMap.removeLayer(plannerMarker);plannerMarker=L.marker([+v.latitude,+v.longitude]).addTo(plannerMap).bindPopup(`<strong>${escapeHtml(v.name)}</strong><br>${escapeHtml(v.address||'Tupi, South Cotabato')}`).openPopup();setTimeout(()=>plannerMap.invalidateSize(),120)}
+}
+// Any manual venue click cancels the auto-match flag so the server knows the
+// user chose the venue themselves.
+venueResults?.addEventListener('click',()=>{if(autoMatchField)autoMatchField.value='0';if(autoMatchStatus)autoMatchStatus.textContent=''});
+autoMatchBtn?.addEventListener('click',async()=>{
+  syncPlannerDateTime();
+  if(!plannerStart.value||!plannerEnd.value||new Date(plannerEnd.value)<=new Date(plannerStart.value)){alert('Choose a valid event date, start time, and end time first.');return}
+  autoMatchBtn.disabled=true;autoMatchBtn.innerHTML='<span class="spinner-border spinner-border-sm"></span> Matching…';
+  if(autoMatchStatus)autoMatchStatus.textContent='';
+  try{
+    const qs=new URLSearchParams({start_at:plannerStart.value,end_at:plannerEnd.value,people:plannerPeople.value||1});
+    const r=await fetch('api/availability.php?'+qs);const d=await r.json();
+    if(!d.ok)throw new Error(d.error||'Unable to check availability.');
+    if(!d.venues.length){
+      const msg=d.rules&&d.rules.blocked?d.rules.error:'No venue is free for that schedule and group size. Try another date, time, or participant count.';
+      venueResults.innerHTML=`<div class="empty-inline"><i class="fa-solid fa-circle-info"></i><span>${escapeHtml(msg)}</span></div>`;
+      if(autoMatchStatus)autoMatchStatus.textContent='';
+      return;
+    }
+    d.venues.forEach(v=>{const card=document.createElement('label');card.className='venue-option';card.innerHTML=`<input type="radio" name="venue_choice" value="${v.id}"><div class="venue-option-icon"><i class="fa-solid fa-location-dot"></i></div><div><h4>${escapeHtml(v.name)}</h4><p>${escapeHtml(v.address||'Tupi, South Cotabato')}</p><span><i class="fa-solid fa-users"></i> Capacity ${v.capacity} · ${escapeHtml(v.facilities||'General facilities')}</span></div>`;card.addEventListener('click',()=>{selectVenueCard(v)});venueResults.appendChild(card)});
+    d.equipment.forEach(eq=>{const row=$(`[data-equipment-id="${eq.id}"]`);if(!row)return;const label=$('.available-label',row),input=$('input',row);label.textContent=eq.available_quantity+' available for this schedule';input.max=Math.max(0,eq.available_quantity);input.disabled=eq.available_quantity<=0;row.classList.toggle('unavailable',eq.available_quantity<=0)});
+    updatePlannerSummary();
+    // Smallest venue that fits the group and has zero schedule conflicts.
+    // Venues with capacity 0 (unspecified) are only used as a last resort.
+    const best=d.venues.find(v=>+v.capacity>0)||d.venues[0];
+    selectVenueCard(best);
+    if(autoMatchField)autoMatchField.value='1';
+    if(autoMatchStatus)autoMatchStatus.innerHTML=`<i class="fa-solid fa-circle-check"></i>Matched <strong>${escapeHtml(best.name)}</strong> — conflict-free for your schedule.`;
+  }catch(e){if(autoMatchStatus)autoMatchStatus.textContent=e.message||'Auto-match failed. Try again.'}
+  finally{autoMatchBtn.disabled=false;autoMatchBtn.innerHTML='<i class="fa-solid fa-wand-magic-sparkles"></i>Match venue for me'}
+});
 findBtn?.addEventListener('click',async()=>{
   syncPlannerDateTime();if(!plannerStart.value||!plannerEnd.value||new Date(plannerEnd.value)<=new Date(plannerStart.value)){alert('Choose a valid event date, start time, and end time.');return}
   findBtn.disabled=true;findBtn.innerHTML='<span class="spinner-border spinner-border-sm"></span> Checking availability…';
