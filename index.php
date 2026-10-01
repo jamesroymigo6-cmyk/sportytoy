@@ -29,6 +29,7 @@ function redirect_page($page,$ok='Saved'){header('Location:index.php?page='.urle
 function log_action(PDO $pdo,int $uid,string $action,string $details=''){ $pdo->prepare('INSERT INTO activity_logs(user_id,action,details) VALUES(?,?,?)')->execute([$uid,$action,$details]); }
 function save_image_upload($field,$folder){
     if(empty($_FILES[$field]['name'])) return null;
+    if(!is_writable(SPORTSYNC_ROOT.'/uploads') && !is_writable(SPORTSYNC_ROOT)) throw new Exception('File uploads are disabled on this hosting environment. Images need a host with persistent storage.');
     if($_FILES[$field]['error']!==UPLOAD_ERR_OK) throw new Exception('Image upload failed.');
     if($_FILES[$field]['size']>4*1024*1024) throw new Exception('Image must be 4 MB or smaller.');
     $mime=(new finfo(FILEINFO_MIME_TYPE))->file($_FILES[$field]['tmp_name']);

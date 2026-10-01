@@ -3,10 +3,12 @@ require dirname(__DIR__) . '/config/db.php';
 require dirname(__DIR__) . '/config/sms.php';
 
 // Designed for an hourly cron job. CLI is preferred. A secret token allows hosts that only support URL cron.
+// Vercel Cron is trusted automatically via its x-vercel-cron request header.
 if (PHP_SAPI !== 'cli') {
+    $isVercelCron = ($_SERVER['HTTP_X_VERCEL_CRON'] ?? '') === '1';
     $token = (string)($_GET['token'] ?? '');
     $expected = (string)sportsync_env('CRON_TOKEN', '');
-    if ($expected === '' || !hash_equals($expected, $token)) {
+    if (!$isVercelCron && ($expected === '' || !hash_equals($expected, $token))) {
         http_response_code(403);
         exit('Forbidden');
     }

@@ -88,6 +88,9 @@ function sportsync_security_headers(): void {
 function sportsync_log(Throwable|string $error): void {
     $message = $error instanceof Throwable ? ($error::class . ': ' . $error->getMessage() . "\n" . $error->getTraceAsString()) : (string)$error;
     $dir = SPORTSYNC_ROOT . '/storage/logs';
+    // Serverless hosts (Vercel) have a read-only application directory, so
+    // fall back to the system temp folder when the project log is unwritable.
+    if (!is_dir($dir) || !is_writable($dir)) $dir = sys_get_temp_dir();
     if (!is_dir($dir)) @mkdir($dir, 0775, true);
     @error_log('[' . date('c') . '] ' . $message . PHP_EOL, 3, $dir . '/app.log');
 }

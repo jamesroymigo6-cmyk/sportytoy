@@ -9,6 +9,17 @@ if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.cookie_secure', sportsync_is_https() ? '1' : '0');
     ini_set('session.gc_maxlifetime', (string)(60 * 60 * 4));
 
+    // Database-backed sessions so logins survive serverless hosting (Vercel),
+    // where the filesystem is ephemeral and file sessions cannot be shared.
+    require_once __DIR__ . '/session.php';
+    if (class_exists('SportyNiMigoDbSessionHandler')) {
+        try {
+            session_set_save_handler(new SportyNiMigoDbSessionHandler(), true);
+        } catch (Throwable $sessionHandlerError) {
+            sportsync_log($sessionHandlerError); // fall back to file sessions
+        }
+    }
+
     session_name('SPORTSYNCSESSID');
     session_start([
         'cookie_httponly' => true,
