@@ -34,5 +34,5 @@ try {
     if (APP_DEBUG) {
         die('Database connection failed: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
     }
-    die('SportSync is temporarily unable to connect to its database. Please try again later.');
+    die('Sporty Ni Migo is temporarily unable to connect to its database. Please try again later.');
 }

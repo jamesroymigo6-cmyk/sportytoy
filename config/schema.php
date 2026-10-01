@@ -1,6 +1,6 @@
 <?php
 /**
- * SportSync database bootstrap.
+ * Sporty Ni Migo database bootstrap.
  *
  * - Fresh installs import database/sports_events_full.sql (all tables used by the current build).
  * - Older v9/v10/v10.1 databases (33 tables) are migrated IN PLACE, preserving
@@ -201,7 +201,7 @@ function sportsync_create_core_tables(PDO $pdo): void {
 }
 
 /* ------------------------------------------------------------------ */
-/* 2. Column additions for databases created by older SportSync builds */
+/* 2. Column additions for databases created by older Sporty Ni Migo builds */
 /* ------------------------------------------------------------------ */
 function sportsync_add_missing_columns(PDO $pdo): void {
     $columns = [

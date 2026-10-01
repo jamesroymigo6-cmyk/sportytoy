@@ -74,7 +74,7 @@ function sportysync_register_form(): string {
             <span data-rule="number"><i class="fa-regular fa-circle"></i>Number</span>
         </div>
 
-        <label class="auth-check auth-terms-check mt-3 mb-4"><input type="checkbox" name="terms" id="terms" required <?= isset($_POST['terms']) ? 'checked' : '' ?>><span>I agree to use SportSync responsibly and keep my account credentials secure.</span></label>
+        <label class="auth-check auth-terms-check mt-3 mb-4"><input type="checkbox" name="terms" id="terms" required <?= isset($_POST['terms']) ? 'checked' : '' ?>><span>I agree to use Sporty Ni Migo responsibly and keep my account credentials secure.</span></label>
 
         <button class="btn auth-primary-btn" id="registerSubmit" type="submit">
             <span class="submit-label">Create account</span>
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Enter a valid email address.';
         }
         if ($values['phone'] === '') {
-            $errors[] = 'Mobile number is required for urgent SportSync SMS reminders.';
+            $errors[] = 'Mobile number is required for urgent Sporty Ni Migo SMS reminders.';
         } else {
             $normalizedPhone = sportsync_normalize_phone($values['phone']);
             if (!$normalizedPhone) {
@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $uid = $pdo->lastInsertId();
 
                 $pdo->prepare('INSERT INTO messages(sender_id,receiver_id,message_type,subject,message) VALUES(NULL,?,"text",?,?)')
-                    ->execute([$uid, 'Welcome to SportSync', 'Your account is ready. Explore events, venues, communication, announcements, and community updates.']);
+                    ->execute([$uid, 'Welcome to Sporty Ni Migo', 'Your account is ready. Explore events, venues, communication, announcements, and community updates.']);
 
                 $pdo->prepare('INSERT INTO activity_logs(user_id,action,details) VALUES(?,?,?)')
                     ->execute([$uid, 'account_registered', 'Self-service registration']);
@@ -198,12 +198,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $existingAccount = true;
                     $errors[] = 'This email is already registered. Sign in or reset your password.';
                 } else {
-                    error_log('SportSync registration error: '.$e->getMessage());
+                    error_log('Sporty Ni Migo registration error: '.$e->getMessage());
                     $errors[] = 'Registration could not be completed. Please try again.';
                 }
             } catch (Throwable $e) {
                 if ($pdo->inTransaction()) $pdo->rollBack();
-                error_log('SportSync registration error: '.$e->getMessage());
+                error_log('Sporty Ni Migo registration error: '.$e->getMessage());
                 $errors[] = 'Registration could not be completed. Please try again.';
             }
         }
@@ -215,8 +215,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Create a SportSync account for online sports events, venue access, communication, and community participation.">
-<title>Create account · SportSync</title>
+<meta name="description" content="Create a Sporty Ni Migo account for online sports events, venue access, communication, and community participation.">
+<title>Create account · Sporty Ni Migo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="auth-hero-pro-inner">
             <div class="auth-brand-pro">
                 <span class="auth-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
-                <div><strong>SportSync</strong><small>Sports Event Operations</small></div>
+                <div><strong>Sporty Ni Migo</strong><small>Sports Event Operations</small></div>
             </div>
 
             <div class="auth-hero-copy-pro">
@@ -271,12 +271,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="auth-mobile-brand d-lg-none">
                     <span class="auth-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
-                    <div><strong>SportSync</strong><small>Sports Event Operations</small></div>
+                    <div><strong>Sporty Ni Migo</strong><small>Sports Event Operations</small></div>
                 </div>
 
                 <div class="auth-heading-pro">
                     <span class="eyebrow">CREATE ACCOUNT</span>
-                    <h2>Get started with SportSync</h2>
+                    <h2>Get started with Sporty Ni Migo</h2>
                     <p>Participant and community accounts can register online. Administrative roles are created by authorized management.</p>
                 </div>
 
@@ -370,7 +370,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     role?.addEventListener('change', () => {
         roleDescription.textContent = role.value === 'Participant/Athlete'
             ? 'Join events, plan permitted activities, access venues, shop, communication, and community features.'
-            : 'Follow events, shop, communicate, receive updates, and participate in the SportSync community.';
+            : 'Follow events, shop, communicate, receive updates, and participate in the Sporty Ni Migo community.';
     });
 
     form?.addEventListener('submit', (event) => {

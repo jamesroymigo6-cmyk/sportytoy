@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign out · SportSync</title>
+<title>Sign out · Sporty Ni Migo</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/app.css">
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="logout-page-card">
     <div class="logout-modal-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
     <span class="eyebrow d-block mt-3">ACCOUNT SESSION</span>
-    <h1>Sign out of SportSync?</h1>
+    <h1>Sign out of Sporty Ni Migo?</h1>
     <p>Confirm that you want to end this session. Your account data and saved activity will remain available the next time you sign in.</p>
     <form method="post" class="d-grid gap-2 mt-4">
       <input type="hidden" name="csrf" value="<?=csrf_token()?>">

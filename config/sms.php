@@ -11,7 +11,7 @@ require_once __DIR__ . '/app.php';
 //   SMSGATE_API_URL=https://api.sms-gate.app
 //   SMSGATE_USERNAME=...   (SMSGate Web Dashboard account username)
 //   SMSGATE_PASSWORD=...   (SMSGate Web Dashboard account password)
-//   SMS_SENDER=SportSync   (labelled in the admin UI; the device SIM's sender
+//   SMS_SENDER=Sporty Ni Migo   (labelled in the admin UI; the device SIM's sender
 //                           identity is what recipients actually see)
 // ---------------------------------------------------------------------------
 
@@ -183,7 +183,7 @@ function sportsync_sms_bulk_recipients(PDO $pdo, array $f): array {
  * Logs one activity_logs row per recipient under action sms_custom.
  */
 function sportsync_send_bulk_sms(PDO $pdo, array $recipients, string $message, string $context = 'custom broadcast'): array {
-    $text = trim((string)sportsync_env('SMS_SENDER', 'SportSync')) . ': ' . trim($message);
+    $text = trim((string)sportsync_env('SMS_SENDER', 'Sporty Ni Migo')) . ': ' . trim($message);
     $sent = 0; $failed = 0; $skipped = 0;
     $log = $pdo->prepare('INSERT INTO activity_logs(user_id,action,details) VALUES(?,?,?)');
     foreach ($recipients as $user) {
@@ -222,7 +222,7 @@ function sportsync_send_announcement_sms(PDO $pdo, int $announcementId, string $
     $users = sportsync_sms_audience_users($pdo, $audience);
     $sent = 0; $failed = 0; $skipped = 0;
     $log = $pdo->prepare('INSERT INTO activity_logs(user_id,action,details) VALUES(?,?,?)');
-    $text = 'SportSync URGENT: ' . trim($title) . ' - ' . trim(preg_replace('/\s+/', ' ', $body));
+    $text = 'Sporty Ni Migo URGENT: ' . trim($title) . ' - ' . trim(preg_replace('/\s+/', ' ', $body));
     foreach ($users as $user) {
         $normalized = sportsync_normalize_phone((string)$user['phone']);
         if (!$normalized) {

@@ -1,6 +1,6 @@
-# SportSync v11 — Consolidated & Hardened
+# Sporty Ni Migo v11 — Consolidated & Hardened
 
-SportSync is a sports event operations platform for Tupi, South Cotabato: event planning with venue and equipment reservations, an equipment/merchandise shop with cart and checkout, community wall, announcements with optional urgent SMS, and role-secured administration.
+Sporty Ni Migo is a sports event operations platform for Tupi, South Cotabato: event planning with venue and equipment reservations, an equipment/merchandise shop with cart and checkout, community wall, announcements with optional urgent SMS, and role-secured administration.
 
 ## What changed in v12 — public landing page & Clerk email authentication
 
@@ -74,7 +74,7 @@ Database note: `gcash_payouts` and `orders.payment_verified_at` are created auto
 3. Copy `.env.example` to `.env` and set `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` (and `APP_URL` in production).
 4. Browse to the app and sign in.
 
-### Demo accounts — password `SportSync2026!` (administrator: `Admin@123`)
+### Demo accounts — password `Sporty Ni Migo2026!` (administrator: `Admin@123`)
 | Role | Email |
 |---|---|
 | Administrator | admin@sports.local |

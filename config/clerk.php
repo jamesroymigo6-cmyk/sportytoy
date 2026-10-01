@@ -1,14 +1,14 @@
 <?php
 /**
- * SportSync × Clerk authentication bridge.
+ * Sporty Ni Migo × Clerk authentication bridge.
  *
- * Adds Clerk email authentication on top of the classic SportSync accounts:
+ * Adds Clerk email authentication on top of the classic Sporty Ni Migo accounts:
  * - ClerkJS is loaded on the auth pages (sign-in / sign-up components).
  * - This library verifies Clerk session JWTs against the instance JWKS
  *   (RS256 via OpenSSL, no Composer packages required) and talks to the
  *   Clerk Backend REST API with cURL.
  * - Local users are provisioned/linked automatically, keeping every existing
- *   SportSync feature (roles, capabilities, SMS, messaging) working unchanged.
+ *   Sporty Ni Migo feature (roles, capabilities, SMS, messaging) working unchanged.
  *
  * Required .env values (all optional — when absent the classic auth is used):
  *   CLERK_PUBLISHABLE_KEY=pk_...
@@ -113,10 +113,10 @@ function sportsync_clerk_user_by_email(string $email): ?array {
  * with email verification codes. A verification email is prepared either way.
  */
 function sportsync_clerk_create_user(string $email, string $fullName, ?string $phone = null, ?string $password = null): array {
-    $parts = preg_split('/\s+/', trim($fullName), 2) ?: ['SportSync'];
+    $parts = preg_split('/\s+/', trim($fullName), 2) ?: ['Sporty Ni Migo'];
     $params = [
         'email_address' => strtolower($email),
-        'first_name'    => $parts[0] ?: 'SportSync',
+        'first_name'    => $parts[0] ?: 'Sporty Ni Migo',
         'last_name'     => $parts[1] ?? '',
     ];
     if ($phone !== null && $phone !== '') $params['phone_number'] = $phone;
@@ -275,7 +275,7 @@ function sportsync_clerk_role_id(PDO $pdo, string $preferred = ''): ?int {
 }
 
 /**
- * Find or create the local SportSync user for a verified Clerk user, and
+ * Find or create the local Sporty Ni Migo user for a verified Clerk user, and
  * always keep clerk_id linked. Returns the same row shape login_user() needs.
  */
 function sportsync_clerk_provision(PDO $pdo, array $clerkUser, string $preferredRole = '', string $preferredPhone = ''): ?array {
@@ -292,7 +292,7 @@ function sportsync_clerk_provision(PDO $pdo, array $clerkUser, string $preferred
     if ($email === '') return null; // require at least one verified email
 
     $name = trim(($clerkUser['first_name'] ?? '') . ' ' . ($clerkUser['last_name'] ?? ''));
-    if ($name === '') $name = ucfirst(strtok($email, '@') ?: 'SportSync member');
+    if ($name === '') $name = ucfirst(strtok($email, '@') ?: 'Sporty Ni Migo member');
     $phone = $preferredPhone;
     if ($phone === '') {
         $primaryPhoneId = (string)($clerkUser['primary_phone_number_id'] ?? '');
@@ -330,7 +330,7 @@ function sportsync_clerk_provision(PDO $pdo, array $clerkUser, string $preferred
                 ->execute([$roleId, $name, $email, $randHash, $phone !== '' ? $phone : null, $clerkId]);
             $newId = (int)$pdo->lastInsertId();
             $pdo->prepare('INSERT INTO messages(sender_id,receiver_id,message_type,subject,message) VALUES(NULL,?,"text",?,?)')
-                ->execute([$newId, 'Welcome to SportSync', 'Your account is ready. Explore events, venues, communication, announcements, and community updates.']);
+                ->execute([$newId, 'Welcome to Sporty Ni Migo', 'Your account is ready. Explore events, venues, communication, announcements, and community updates.']);
             $pdo->prepare('INSERT INTO activity_logs(user_id,action,details) VALUES(?,?,?)')
                 ->execute([$newId, 'account_registered', 'Provisioned via Clerk sign-in']);
             $q3 = $pdo->prepare('SELECT u.*, r.name role_name FROM users u JOIN roles r ON r.id=u.role_id WHERE u.id=?');

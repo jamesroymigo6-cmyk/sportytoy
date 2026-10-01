@@ -5,7 +5,7 @@
  * ClerkJS completes the authentication flow on the auth pages and then
  * redirects here with the session token (POST when possible, GET otherwise).
  * This endpoint verifies the JWT against Clerk's JWKS, provisions or links the
- * matching local SportSync account, and opens the PHP session the app uses.
+ * matching local Sporty Ni Migo account, and opens the PHP session the app uses.
  */
 
 require_once dirname(__DIR__) . '/config/db.php';

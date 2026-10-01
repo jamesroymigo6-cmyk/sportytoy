@@ -79,7 +79,7 @@ if (!$uLat || !$uLng) {
             'viewbox' => '124.60,5.60,125.30,6.80',
             'bounded' => 1,
         ]);
-        [$status, $body] = $gets($url, ['User-Agent: SportSync/1.0 (sportsync local deployment)']);
+        [$status, $body] = $gets($url, ['User-Agent: Sporty Ni Migo/1.0 (sportsync local deployment)']);
         $lastStatus = $status;
         $data = json_decode($body, true);
         if ($status < 400 && is_array($data) && $data) { $geo = $data; break; }

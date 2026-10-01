@@ -12,13 +12,13 @@ $url = 'https://api.open-meteo.com/v1/forecast?latitude='.$lat.'&longitude='.$lo
 function fetch_weather_json(string $url): string|false {
     if (function_exists('curl_init')) {
         $ch = curl_init($url);
-        curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_CONNECTTIMEOUT=>4,CURLOPT_TIMEOUT=>7,CURLOPT_USERAGENT=>'SportSync/1.0']);
+        curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_CONNECTTIMEOUT=>4,CURLOPT_TIMEOUT=>7,CURLOPT_USERAGENT=>'Sporty Ni Migo/1.0']);
         $body = curl_exec($ch);
         $code = (int)curl_getinfo($ch,CURLINFO_RESPONSE_CODE);
         curl_close($ch);
         return ($body !== false && $code >= 200 && $code < 300) ? $body : false;
     }
-    $ctx = stream_context_create(['http'=>['timeout'=>7,'header'=>"User-Agent: SportSync/1.0\r\n"]]);
+    $ctx = stream_context_create(['http'=>['timeout'=>7,'header'=>"User-Agent: Sporty Ni Migo/1.0\r\n"]]);
     return @file_get_contents($url,false,$ctx);
 }
 function weather_label(int $code): string {

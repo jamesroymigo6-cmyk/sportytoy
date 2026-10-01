@@ -90,8 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Sign in to SportSync sports event operations platform.">
-<title>Sign in · SportSync</title>
+<meta name="description" content="Sign in to Sporty Ni Migo sports event operations platform.">
+<title>Sign in · Sporty Ni Migo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="auth-hero-pro-inner">
             <div class="auth-brand-pro">
                 <span class="auth-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
-                <div><strong>SportSync</strong><small>Sports Event Operations</small></div>
+                <div><strong>Sporty Ni Migo</strong><small>Sports Event Operations</small></div>
             </div>
 
             <div class="auth-hero-copy-pro">
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="auth-card-inner auth-card-inner-pro">
                 <div class="auth-mobile-brand d-lg-none">
                     <span class="auth-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
-                    <div><strong>SportSync</strong><small>Sports Event Operations</small></div>
+                    <div><strong>Sporty Ni Migo</strong><small>Sports Event Operations</small></div>
                 </div>
 
                 <div class="auth-heading-pro">
@@ -222,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
                 <?php endif; ?>
 
-                <div class="auth-divider"><span>New to SportSync?</span></div>
+                <div class="auth-divider"><span>New to Sporty Ni Migo?</span></div>
                 <a class="btn auth-secondary-btn" href="register.php"><i class="fa-solid fa-user-plus"></i> Create an account</a>
 
                 <div class="auth-trust-row">

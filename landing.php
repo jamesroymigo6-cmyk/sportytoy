@@ -18,8 +18,8 @@ $notice = trim($_GET['notice'] ?? '');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#8b2ff5">
-<meta name="description" content="SportSync — the online sports event operations platform for Tupi, South Cotabato. Plan events, reserve venues and equipment, run the shop, and keep the community connected.">
-<title>SportSync · Sports Event Operations Platform</title>
+<meta name="description" content="Sporty Ni Migo — the online sports event operations platform for Tupi, South Cotabato. Plan events, reserve venues and equipment, run the shop, and keep the community connected.">
+<title>Sporty Ni Migo · Sports Event Operations Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@ $notice = trim($_GET['notice'] ?? '');
     <header class="landing-nav" id="landingNav">
         <a class="landing-brand" href="landing.php">
             <span class="landing-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
-            <span class="brand-words"><strong>SportSync</strong><small>sports operations</small></span>
+            <span class="brand-words"><strong>Sporty Ni Migo</strong><small>sports operations</small></span>
         </a>
         <nav class="landing-links" aria-label="Site sections">
             <a href="#features">Features</a>
@@ -126,13 +126,13 @@ $notice = trim($_GET['notice'] ?? '');
             <div class="section-head reveal">
                 <span class="eyebrow">Everything in one place</span>
                 <h2>Built for the whole season<span class="dot">.</span></h2>
-                <p>SportSync keeps the community moving — from the first plan to the final whistle.</p>
+                <p>Sporty Ni Migo keeps the community moving — from the first plan to the final whistle.</p>
             </div>
             <div class="feature-grid">
                 <article class="feature-card reveal">
                     <div class="feature-icon blue"><i class="fa-solid fa-calendar-days"></i></div>
                     <h3>Event planning &amp; scheduling</h3>
-                    <p>Pick a date, choose a venue, borrow equipment — SportSync checks every conflict before it happens and reserves everything at once.</p>
+                    <p>Pick a date, choose a venue, borrow equipment — Sporty Ni Migo checks every conflict before it happens and reserves everything at once.</p>
                 </article>
                 <article class="feature-card reveal">
                     <div class="feature-icon green"><i class="fa-solid fa-map-location-dot"></i></div>
@@ -235,7 +235,7 @@ $notice = trim($_GET['notice'] ?? '');
             </div>
             <div class="faq-list">
                 <details class="faq-item reveal" open>
-                    <summary>Is SportSync free to use? <i class="fa-solid fa-chevron-down"></i></summary>
+                    <summary>Is Sporty Ni Migo free to use? <i class="fa-solid fa-chevron-down"></i></summary>
                     <p>Yes. Participant and community accounts are free — register with your email, verify it, and you can plan, join, and shop right away.</p>
                 </details>
                 <details class="faq-item reveal">
@@ -258,7 +258,7 @@ $notice = trim($_GET['notice'] ?? '');
             <div class="cta-card">
                 <span class="eyebrow">Ready when you are</span>
                 <h2>Your community's next event starts here<span class="dot">.</span></h2>
-                <p>Create a free account in under a minute — verify your email and open your SportSync workspace.</p>
+                <p>Create a free account in under a minute — verify your email and open your Sporty Ni Migo workspace.</p>
                 <div class="hero-ctas center">
                     <a class="btn-pill btn-pill-solid" href="register.php">Create your account</a>
                     <a class="btn-pill btn-pill-line" href="login.php">I already have one</a>
@@ -271,7 +271,7 @@ $notice = trim($_GET['notice'] ?? '');
         <div class="footer-inner">
             <div class="footer-brand">
                 <span class="landing-brand-mark"><img src="assets/img/logo-icon.png" alt="Sporty Ni Migo logo"></span>
-                <div class="brand-words"><strong>SportSync</strong><small>Sports event operations for Tupi, South Cotabato</small></div>
+                <div class="brand-words"><strong>Sporty Ni Migo</strong><small>Sports event operations for Tupi, South Cotabato</small></div>
             </div>
             <nav class="footer-links" aria-label="Footer">
                 <a href="login.php">Sign in</a>
@@ -279,7 +279,7 @@ $notice = trim($_GET['notice'] ?? '');
                 <a href="#features">Features</a>
                 <a href="#faq">FAQ</a>
             </nav>
-            <small class="footer-copy">© <?= date('Y') ?> SportSync. Built for the community.</small>
+            <small class="footer-copy">© <?= date('Y') ?> Sporty Ni Migo. Built for the community.</small>
         </div>
     </footer>
 

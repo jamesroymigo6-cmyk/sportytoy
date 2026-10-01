@@ -1,5 +1,5 @@
 -- =============================================================================
--- SportSync — Single consolidated schema (all tables used by the current build)
+-- Sporty Ni Migo — Single consolidated schema (all tables used by the current build)
 -- =============================================================================
 -- FRESH INSTALLS: import only this file.
 --   mysql -u root -p < database/sports_events_full.sql
@@ -14,7 +14,7 @@ USE sports_event_system;
 
 SET FOREIGN_KEY_CHECKS=0;
 
--- Drop legacy tables from older SportSync imports so a re-import stays clean.
+-- Drop legacy tables from older Sporty Ni Migo imports so a re-import stays clean.
 DROP TABLE IF EXISTS password_reset_tokens,likes,comments,voice_messages,notifications,
   sms_logs,weather_alerts,sales,order_items,cart_items,carts,merchandise,inventory_transactions,
   inventory,equipment_assignments,event_equipment_reservations,registrations,participants,
@@ -294,7 +294,7 @@ CREATE TABLE announcement_comments (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- =============================================================================
--- Seed data — demo accounts use the password: SportSync2026! (administrator:
+-- Seed data — demo accounts use the password: Sporty Ni Migo2026! (administrator:
 -- Admin@123)
 -- =============================================================================
 
@@ -333,12 +333,12 @@ INSERT INTO equipment(name,category,quantity,condition_status,current_location,s
 ('Timing Gate','Race Equipment',2,'good','Storage A','available');
 
 INSERT INTO announcements(title,body,type,audience,created_by) VALUES
-('Welcome to SportSync','All event logistics and announcements are now centralized here.','general','all',1),
+('Welcome to Sporty Ni Migo','All event logistics and announcements are now centralized here.','general','all',1),
 ('Hydration Reminder','Outdoor participants should bring water and arrive 30 minutes early.','urgent','participants',2);
 
 INSERT INTO messages(sender_id,receiver_id,subject,message) VALUES
-(NULL,2,'Welcome to SportSync','Your organizer account is ready. Explore events, venues, equipment, and communication tools.'),
-(NULL,4,'Welcome to SportSync','Your athlete account is ready. Browse events and register online.');
+(NULL,2,'Welcome to Sporty Ni Migo','Your organizer account is ready. Explore events, venues, equipment, and communication tools.'),
+(NULL,4,'Welcome to Sporty Ni Migo','Your athlete account is ready. Browse events and register online.');
 
 INSERT INTO community_posts(user_id,content) VALUES
 (2,'Welcome everyone! Check the calendar for upcoming community sports activities.'),

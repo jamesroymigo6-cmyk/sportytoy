@@ -14,7 +14,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 if (!sportsync_sms_enabled()) {
-    fwrite(STDERR, "SportSync SMS is not configured.\n");
+    fwrite(STDERR, "Sporty Ni Migo SMS is not configured.\n");
     exit(2);
 }
 
@@ -42,7 +42,7 @@ foreach ($events as $event) {
     $rp->execute([$event['id']]);
     foreach ($rp->fetchAll(PDO::FETCH_ASSOC) as $row) $recipients[(int)$row['id']]=$row;
 
-    $message = 'SportSync reminder: "'.$event['title'].'" starts '.date('M d, Y g:i A', strtotime($event['start_at'])).' at '.($event['venue_name'] ?: 'the assigned venue').'. Please check SportSync for updates.';
+    $message = 'Sporty Ni Migo reminder: "'.$event['title'].'" starts '.date('M d, Y g:i A', strtotime($event['start_at'])).' at '.($event['venue_name'] ?: 'the assigned venue').'. Please check Sporty Ni Migo for updates.';
     foreach ($recipients as $recipient) {
         $exists = $pdo->prepare('SELECT COUNT(*) FROM activity_logs WHERE user_id=? AND action="sms_event_reminder_24h" AND details LIKE ? AND created_at > DATE_SUB(NOW(), INTERVAL 2 DAY)');
         $exists->execute([$recipient['id'], 'event #'.$event['id'].'|%']);
@@ -56,4 +56,4 @@ foreach ($events as $event) {
     }
 }
 
-echo "SportSync 24h reminders: {$sent} sent, {$failed} failed, {$skipped} already handled.\n";
+echo "Sporty Ni Migo 24h reminders: {$sent} sent, {$failed} failed, {$skipped} already handled.\n";

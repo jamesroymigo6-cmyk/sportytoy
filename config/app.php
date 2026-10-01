@@ -1,6 +1,6 @@
 <?php
 /**
- * SportSync online application bootstrap.
+ * Sporty Ni Migo online application bootstrap.
  * Loads environment variables, applies production-safe headers, and exposes helpers.
  */
 
@@ -103,12 +103,12 @@ function sportsync_public_error(Throwable $e): string {
             return 'The selected record or your login session no longer matches the database. Please refresh the page; if this database was re-imported, sign out and sign in again.';
         }
         if (str_contains($msg, 'Unknown column') || str_contains($msg, "doesn't exist") || $state === '42S22' || $state === '42S02') {
-            return 'The SportSync database schema is out of date or incomplete. Open the application once with an administrator database account to let it self-upgrade, or import database/sports_events_full.sql for a fresh install.';
+            return 'The Sporty Ni Migo database schema is out of date or incomplete. Open the application once with an administrator database account to let it self-upgrade, or import database/sports_events_full.sql for a fresh install.';
         }
         if (str_contains($msg, 'Duplicate entry')) return 'That record already exists. Please use different details or refresh the page.';
     }
     $code='SS-'.strtoupper(substr(hash('sha256',$e->getMessage().$e->getFile().$e->getLine()),0,8));
-    return 'SportSync could not save this change. Error reference: '.$code.'. Please refresh and try again. An administrator can check storage/logs/app.log using this time/error reference.';
+    return 'Sporty Ni Migo could not save this change. Error reference: '.$code.'. Please refresh and try again. An administrator can check storage/logs/app.log using this time/error reference.';
 }
 
 // Clerk is loaded here so every entry point (and the security headers below)

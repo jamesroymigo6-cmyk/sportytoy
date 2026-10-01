@@ -131,7 +131,7 @@ findBtn?.addEventListener('click',async()=>{
 });
 
 // Tupi, South Cotabato venue map
-if($('#venueMap')){const cards=$$('.venue-directory-card');const valid=cards.map((card,i)=>({card,id:i,lat:parseFloat(card.dataset.lat),lng:parseFloat(card.dataset.lng)})).filter(v=>Number.isFinite(v.lat)&&Number.isFinite(v.lng));const tupi=[6.3348,124.9526];const map=L.map('venueMap').setView(tupi,14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);const markers=[];valid.forEach(v=>{const title=$('h3',v.card)?.textContent||'SportSync Venue',address=$('p',v.card)?.textContent||'Tupi, South Cotabato';const marker=L.marker([v.lat,v.lng]).addTo(map).bindPopup(`<strong>${escapeHtml(title)}</strong><br>${escapeHtml(address)}<br><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${v.lat},${v.lng}">Open directions</a>`);markers.push(marker);$('.show-venue-map',v.card)?.addEventListener('click',()=>{map.setView([v.lat,v.lng],16);marker.openPopup()})});if(valid.length){const group=L.featureGroup(markers);map.fitBounds(group.getBounds().pad(.25),{maxZoom:15})}setTimeout(()=>map.invalidateSize(),200)}
+if($('#venueMap')){const cards=$$('.venue-directory-card');const valid=cards.map((card,i)=>({card,id:i,lat:parseFloat(card.dataset.lat),lng:parseFloat(card.dataset.lng)})).filter(v=>Number.isFinite(v.lat)&&Number.isFinite(v.lng));const tupi=[6.3348,124.9526];const map=L.map('venueMap').setView(tupi,14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);const markers=[];valid.forEach(v=>{const title=$('h3',v.card)?.textContent||'Sporty Ni Migo Venue',address=$('p',v.card)?.textContent||'Tupi, South Cotabato';const marker=L.marker([v.lat,v.lng]).addTo(map).bindPopup(`<strong>${escapeHtml(title)}</strong><br>${escapeHtml(address)}<br><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${v.lat},${v.lng}">Open directions</a>`);markers.push(marker);$('.show-venue-map',v.card)?.addEventListener('click',()=>{map.setView([v.lat,v.lng],16);marker.openPopup()})});if(valid.length){const group=L.featureGroup(markers);map.fitBounds(group.getBounds().pad(.25),{maxZoom:15})}setTimeout(()=>map.invalidateSize(),200)}
 
 // Venue pin drop helpers (Add venue + Edit venue modals)
 function createVenuePinMap(mapElId, pinLatId, pinLngId, clearBtnId, focusLat, focusLng, onReady){
@@ -212,7 +212,7 @@ $('#postType')?.addEventListener('change',e=>{$('#eventLinkWrap')?.classList.tog
 // Tournament view
 $$('[data-tour-view]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-tour-view]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');$$('.tour-view').forEach(x=>x.classList.add('d-none'));$('#tour-'+btn.dataset.tourView)?.classList.remove('d-none')}));
 
-// SportSync UX Refinement v5
+// Sporty Ni Migo UX Refinement v5
 (() => {
   // Make responsive tables understandable when they turn into mobile cards.
   document.querySelectorAll('.modern-table').forEach((table) => {

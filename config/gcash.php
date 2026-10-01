@@ -1,6 +1,6 @@
 <?php
 /**
- * SportSync GCash payment gateway (merchandise checkout).
+ * Sporty Ni Migo GCash payment gateway (merchandise checkout).
  *
  * Two operating modes, selected with GCASH_MODE in .env:
  *
@@ -87,7 +87,7 @@ function sportsync_gcash_create_checkout(float $total, string $description, arra
         'description' => mb_substr($description, 0, 200),
         'success_url' => sportsync_url('gcash_return.php'),
         'cancel_url' => sportsync_url('index.php?page=shop'),
-        'reference_number' => 'SportSync-' . strtoupper(bin2hex(random_bytes(4))),
+        'reference_number' => 'SportyNiMigo-' . strtoupper(bin2hex(random_bytes(4))),
         'send_email_receipt' => false,
         'show_line_items' => true,
         'show_description' => true,
