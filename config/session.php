@@ -28,11 +28,16 @@ if (!class_exists('SportyNiMigoDbSessionHandler')) {
                  . ';port=' . sportsync_env('DB_PORT', '3306')
                  . ';dbname=' . sportsync_env('DB_DATABASE', 'sports_event_system')
                  . ';charset=utf8mb4';
-            $this->pdo = new PDO($dsn, sportsync_env('DB_USERNAME', 'root'), sportsync_env('DB_PASSWORD', ''), [
+            $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_TIMEOUT => 5,
-            ]);
+            ];
+            if (sportsync_env('DB_SSL', '') === '1') {
+                if (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                if ((string)sportsync_env('DB_SSL_CA', '') !== '' && defined('PDO::MYSQL_ATTR_SSL_CA')) $options[PDO::MYSQL_ATTR_SSL_CA] = sportsync_env('DB_SSL_CA', '');
+            }
+            $this->pdo = new PDO($dsn, sportsync_env('DB_USERNAME', 'root'), sportsync_env('DB_PASSWORD', ''), $options);
             try {
                 $offset = (new DateTimeZone(APP_TIMEZONE))->getOffset(new DateTime('now', new DateTimeZone(APP_TIMEZONE)));
                 $this->pdo->exec("SET time_zone = '" . sprintf('%s%02d:%02d', $offset < 0 ? '-' : '+', intdiv(abs($offset), 3600), intdiv(abs($offset) % 3600, 60)) . "'");

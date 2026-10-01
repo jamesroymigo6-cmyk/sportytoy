@@ -9,14 +9,22 @@ $pass = sportsync_env('DB_PASSWORD', '');
 
 $dsn = "mysql:host={$host};port={$port};dbname={$db};charset=utf8mb4";
 
+// Cloud MySQL hosts (Aiven, TiDB Serverless, etc.) usually require TLS.
+// Set DB_SSL=1 (and optionally DB_SSL_CA to a CA bundle path) to enable it.
+$pdoOptions = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::ATTR_PERSISTENT => false,
+    PDO::ATTR_TIMEOUT => 8,
+];
+if (sportsync_env('DB_SSL', '') === '1') {
+    if (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) $pdoOptions[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+    if ((string)sportsync_env('DB_SSL_CA', '') !== '' && defined('PDO::MYSQL_ATTR_SSL_CA')) $pdoOptions[PDO::MYSQL_ATTR_SSL_CA] = sportsync_env('DB_SSL_CA', '');
+}
+
 try {
-    $pdo = new PDO($dsn, $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::ATTR_PERSISTENT => false,
-        PDO::ATTR_TIMEOUT => 8,
-    ]);
+    $pdo = new PDO($dsn, $user, $pass, $pdoOptions);
     // Derive the MySQL session offset from APP_TIMEZONE so the database can
     // never drift away from what PHP's date() and date_default_timezone_set()
     // produce (shared hosting often has MySQL on a different zone than PHP).
