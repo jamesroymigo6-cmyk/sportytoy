@@ -13,3 +13,7 @@ l.txt
 # Editor junk
 .DS_Store
 Thumbs.db
+.vercel
+
+.vercel
+.env*
