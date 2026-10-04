@@ -1,0 +1,15 @@
+# Keep secrets out of the image: the app reads Render dashboard environment
+# variables first (sportsync_env() checks getenv() before any .env file).
+.env
+.env.local
+
+# Git, local tooling and Vercel deployment artifacts
+.git
+.gitignore
+.freebuff
+.vercel
+.vercelignore
+vercel.json
+C:*.ps1
+
+node_modules

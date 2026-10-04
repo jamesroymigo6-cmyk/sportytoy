@@ -1,0 +1,60 @@
+# ============================================================================
+# Render Blueprint — Sporty Ni Migo
+# ----------------------------------------------------------------------------
+# Deploy: Render dashboard → "New +" → "Blueprint" → pick this repo,
+# or `render blueprint launch` from the repo root (Render CLI).
+# Values marked `sync: false` are requested once when the blueprint is applied.
+#
+# NOTE: Render does not offer managed MySQL. Point the DB_* values at a cloud
+# MySQL such as Aiven (free plan) or TiDB Cloud Serverless — DB_SSL=1 enables
+# TLS for those hosts. Import database/sports_events_full.sql once for the
+# seeded demo data, or leave the database empty and the app self-creates every
+# table on first request.
+# ============================================================================
+services:
+  - type: web
+    name: sporty-ni-migo
+    runtime: docker
+    plan: free            # spins down after ~15 min idle; upgrade for always-on
+    healthCheckPath: /health.php
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "0"
+      - key: APP_TIMEZONE
+        value: Asia/Manila
+      # APP_URL (e.g. https://sporty-ni-migo.onrender.com) is optional: the app
+      # falls back to the incoming Host header when it is unset.
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_SSL
+        value: "1"        # Aiven/TiDB require TLS; set "0" for non-TLS MySQL
+      # Optional integrations — add these in the dashboard when needed:
+      #   CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY, CLERK_FAPI_URL
+      #   GCASH_NUMBER, GCASH_MODE, PAYMONGO_SECRET_KEY
+      #   SMSGATE_API_URL, SMSGATE_USERNAME, SMSGATE_PASSWORD, SMS_SENDER
+      #   CRON_TOKEN (secures cron/send_event_reminders.php over URL)
+    # Persistent uploads (merch/venue images, voice notes) need a paid disk:
+    # disk:
+    #   name: sporty-uploads
+    #   mountPath: /var/www/html/uploads
+    #   sizeGB: 1
+
+  # Optional hourly SMS reminders. Cron Jobs require a paid plan; the app also
+  # supports URL cron via cron/send_event_reminders.php?token=$CRON_TOKEN.
+  # - type: cron
+  #   name: sporty-ni-migo-reminders
+  #   runtime: docker
+  #   schedule: "0 * * * *"
+  #   dockerCommand: php /var/www/html/cron/send_event_reminders.php
+  #   # Copy the DB_* env vars from the web service (blueprints cannot share them).

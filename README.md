@@ -112,6 +112,31 @@ Do **not** import anything. Open the app once while using a database account tha
 `database/sports_events_full.sql` contains every table the current build uses, including the columns added by `config/schema.php`. Use it for a clean install or to inspect the full current schema in one place. Existing databases are still upgraded in place by `config/schema.php`.
 - **Times look wrong.** PHP and the MySQL session both follow `APP_TIMEZONE` (default `Asia/Manila`); `config/db.php` derives the database session offset from it. Set `APP_TIMEZONE` in `.env` if you deploy in another zone, and leave the server's own `php.ini` zone alone.
 
+## Deploying to Render
+
+The app ships as a **Docker web service** (Render has no native PHP runtime). The repo contains everything: `Dockerfile` (PHP 8.3 + Apache — the same PHP version as the Vercel runtime), `docker/start.sh` (binds Apache to Render's `$PORT`), and `render.yaml` (a Render Blueprint that pre-configures the service).
+
+1. **Create a cloud MySQL database** (Render does not offer managed MySQL): [Aiven free plan](https://aiven.io) or [TiDB Cloud Serverless](https://tidb.cloud) work well and both require TLS, which `DB_SSL=1` enables. Import the schema once for the seeded demo accounts:
+   ```
+   mysql -h HOST -P PORT -u USER -p < database/sports_events_full.sql
+   ```
+   (Skipping the import also works — the app creates every table on first request — but an empty database has no users; import the SQL to get the demo accounts.)
+2. **Push this repo to GitHub/GitLab**, then in the Render dashboard choose **New + → Blueprint**, pick the repository, and fill in the prompted values (`DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`). Render builds the Dockerfile and waits for `/health.php` to go green.
+3. **Environment variables** (pre-filled or prompted by `render.yaml`; edit anytime under the service → Environment):
+   - `APP_ENV=production`, `APP_DEBUG=0`, `APP_TIMEZONE=Asia/Manila`, `DB_SSL=1`, `DB_PORT=3306`
+   - Optional: `APP_URL`, Clerk keys, `GCASH_*` / `PAYMONGO_SECRET_KEY`, `SMSGATE_*` / `SMS_SENDER`, `CRON_TOKEN`
+
+   Values set here always win over any `.env` file — the loader reads `getenv()` first.
+4. **Done** — Render assigns `https://<service>.onrender.com` with HTTPS. Sessions, CSRF tokens and carts live in MySQL, so restarts never log anyone out.
+
+**Render-specific notes**
+
+- **Free plan**: the service spins down after ~15 minutes of inactivity and the next request pays a ~50 s cold start. Upgrade the instance for always-on traffic.
+- **Uploads**: the container filesystem is writable but **ephemeral** — uploaded venue/product images and voice notes disappear on the next deploy/restart. Uncomment the `disk:` block in `render.yaml` (paid plan) to mount a persistent disk over `uploads/`; the Dockerfile/start script keep `storage/` and `uploads/` writable either way.
+- **Hourly SMS reminders**: uncomment the `cron` service in `render.yaml` (paid plan), or keep using URL cron against `cron/send_event_reminders.php?token=…` with `CRON_TOKEN` set (e.g. from cron-job.org).
+- Admin → SMS settings writes to the container's `.env`, which is ephemeral; on Render, manage those values in the dashboard instead.
+- The Vercel files (`vercel.json`, `api/index.php`) stay harmless — you can keep both deploys if you like.
+
 ## Deploying to Vercel
 
 Sporty Ni Migo runs on Vercel's serverless PHP runtime (community `vercel-php`):
